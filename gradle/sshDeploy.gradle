@@ -4,8 +4,11 @@ import com.manning.gia.ssh.SshExec
 apply from: "$rootDir/gradle/downloadWar.gradle"
 
 ext {
-    warFile = configurations.todo.singleFile
-    tomcatRemoteDir = '/opt/apache-tomcat-7.0.42'
+//    warFile = configurations.todo.singleFile
+
+    warFile = file("$buildDir/download/artifacts")
+
+    tomcatRemoteDir = '/home/vagrant/apache-tomcat-8.5.15'
 
     userHome = System.properties['user.home']
     vagrantKeyFile = file("$userHome/.vagrant.d/insecure_private_key")
@@ -37,7 +40,7 @@ tasks.withType(SshExec) {
 }
 
 task shutdownTomcat(type: SshExec, dependsOn: copyWarToServer) {
-    command = "sudo -u tomcat $tomcatRemoteDir/bin/shutdown.sh"
+    command = "sudo -u vagrant $tomcatRemoteDir/bin/shutdown.sh"
 
     doFirst {
         logger.quiet "Shutting down remote Tomcat."
@@ -45,11 +48,11 @@ task shutdownTomcat(type: SshExec, dependsOn: copyWarToServer) {
 }
 
 task deleteTomcatWebappsDir(type: SshExec, dependsOn: shutdownTomcat) {
-    command = "sudo -u tomcat rm -rf $tomcatRemoteDir/webapps/todo"
+    command = "sudo -u vagrant rm -rf $tomcatRemoteDir/webapps/todo"
 }
 
 task deleteTomcatWorkDir(type: SshExec, dependsOn: shutdownTomcat) {
-    command = "sudo -u tomcat rm -rf $tomcatRemoteDir/work"
+    command = "sudo -u vagrant rm -rf $tomcatRemoteDir/work"
 }
 
 task deleteOldArtifacts(dependsOn: [deleteTomcatWebappsDir, deleteTomcatWorkDir]) {
@@ -59,7 +62,7 @@ task deleteOldArtifacts(dependsOn: [deleteTomcatWebappsDir, deleteTomcatWorkDir]
 }
 
 task copyWarToWebappsDir(type: SshExec, dependsOn: deleteOldArtifacts) {
-    command = "sudo -u tomcat cp /tmp/$warFile.name $tomcatRemoteDir/webapps/todo.war"
+    command = "sudo -u vagrant cp /tmp/$warFile.name $tomcatRemoteDir/webapps/todo.war"
 
     doFirst {
         logger.quiet "Deploying WAR file to Tomcat."
@@ -67,7 +70,7 @@ task copyWarToWebappsDir(type: SshExec, dependsOn: deleteOldArtifacts) {
 }
 
 task startupTomcat(type: SshExec, dependsOn: copyWarToWebappsDir) {
-    command = "sudo -u tomcat $tomcatRemoteDir/bin/startup.sh"
+    command = "sudo -u vagrant $tomcatRemoteDir/bin/startup.sh"
 
     doFirst {
         logger.quiet "Starting up remote Tomcat."

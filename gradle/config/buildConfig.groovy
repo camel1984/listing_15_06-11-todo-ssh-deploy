@@ -14,7 +14,7 @@ environments {
         tomcat {
             hostname = '193.168.1.33'
             port = 8080
-            context = 'todo'
+            context = 'todo-web'
         }
     }
 }
