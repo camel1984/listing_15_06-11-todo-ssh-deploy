@@ -1,6 +1,6 @@
 binaryRepository {
-    baseUrl = 'http://localhost:8081/artifactory'
-    releaseUrl = "$baseUrl/libs-release-local"
+    baseUrl = 'https://dl.bintray.com'
+    releaseUrl = "$baseUrl/wsjorg/test/"
 }
 
 environments {
