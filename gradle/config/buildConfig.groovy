@@ -6,7 +6,7 @@ binaryRepository {
 environments {
     local {
         server {
-            hostname = 'localhost'
+            hostname = '127.0.0.1'
             sshPort = 2222
             username = 'vagrant'
         }

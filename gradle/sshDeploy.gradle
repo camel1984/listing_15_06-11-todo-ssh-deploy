@@ -6,12 +6,11 @@ apply from: "$rootDir/gradle/downloadWar.gradle"
 ext {
 //    warFile = configurations.todo.singleFile
 
-    warFile = file("$buildDir/download/artifacts")
+    warFile = file("$buildDir/download/artifacts/" + "deploy-todo-web-" + project.version.toString() + ".war")
 
     tomcatRemoteDir = '/home/vagrant/apache-tomcat-8.5.15'
 
-    userHome = System.properties['user.home']
-    vagrantKeyFile = file("$userHome/.vagrant.d/insecure_private_key")
+    vagrantKeyFile = file("/Users/shuaijie/document/java_frameworks/gradle/mycode/ch15/vagrant-tomcat-box/.vagrant/machines/tomcat/virtualbox/private_key")
     remoteTmpDir = "$config.server.username@$config.server.hostname:/tmp"
 }
 

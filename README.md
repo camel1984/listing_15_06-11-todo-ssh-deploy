@@ -22,6 +22,12 @@ this verison only works with gradle 5.1:
 
 gradle -Penv=test todo-web:deployWar
 
+gradle todo-web:fetchToDoWar
+
+gradle todo-web:deployWar
+
+
+
 ------------------------------------------------------------
 Gradle 5.1
 ------------------------------------------------------------
